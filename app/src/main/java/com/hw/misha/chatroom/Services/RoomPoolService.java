@@ -20,15 +20,11 @@ import java.util.TimerTask;
 /**
  * Created by Misha on 9/10/2016.
  */
-public class RoomPoolService {
-    /**
-     * Created by Misha on 9/7/2016.
-     */
-    public class RoomRefreshService extends Service /*TimerTask*/ {
+public class RoomPoolService extends Service /*TimerTask*/ {
         private static final String DB_REF = "db_obj";
         private static final String EXTRA_PARAM_A = "PARAM_A";
 
-        public static final String BROADCAST_ACTION_POLL = "com.example.misha.myfirebasetest.BROADCAST_ACTION_POLL";
+        public static final String BROADCAST_ACTION_POLL = "com.hw.misha.chatroom.BROADCAST_ACTION_POLL";
         public static final String EXTRA_PARAM_B = "getRoomsUpdate";
         // constant
         //TODO define the correct time interval 
@@ -44,7 +40,6 @@ public class RoomPoolService {
         @Override
         public int onStartCommand(Intent intent, int flags, int startId) {
             Bundle extras = intent.getExtras();
-            messageHandler = (Messenger) extras.get("MESSENGER");
             Toast.makeText(getBaseContext(),"in onStartCommand",Toast.LENGTH_SHORT).show();
             return super.onStartCommand(intent, flags, startId);
         }
@@ -103,5 +98,5 @@ public class RoomPoolService {
             sendBroadcast(intent);
 
         }
-    }
 }
+
