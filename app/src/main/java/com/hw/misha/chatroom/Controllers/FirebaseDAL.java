@@ -28,6 +28,7 @@ public class FirebaseDAL implements RoomStateListener, Serializable {
     public FirebaseDAL() {
         this.fdbHandler = new FireBaseDBHandler();
         this.roomHashMap = new HashMap<>();
+        registerStateListener();
     }
 
     public void registerRoom(Context context,ChatRoom room){
@@ -89,8 +90,7 @@ public class FirebaseDAL implements RoomStateListener, Serializable {
         }
     }
 
-    @Override
-    public HashMap<?, ?> getrooms() {
+    public HashMap<?, ?> getRooms() {
         synchronized (this){
             return roomHashMap;
         }

@@ -13,5 +13,5 @@ public interface RoomStateListener {
 
     void notifyListener(DataSnapshot snapshot);
 
-    HashMap<?, ?> getrooms();
+    HashMap<?, ?> getRooms();
 }

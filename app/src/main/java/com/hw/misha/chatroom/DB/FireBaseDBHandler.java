@@ -157,6 +157,7 @@ public class FireBaseDBHandler {
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {
+                //TODO need to take care of this case
                 System.out.println("The read failed: " + firebaseError.getMessage());
             }
         });
