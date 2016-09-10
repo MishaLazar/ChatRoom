@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.firebase.client.Firebase;
 
 public class MainActivity extends AppCompatActivity {
-
+    //Trank
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
