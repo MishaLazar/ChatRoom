@@ -1,4 +1,4 @@
-package com.hw.misha.chatroom.Controllers;
+package com.hw.misha.chatroom;
 
 /**
  * Created by Misha on 9/10/2016.
@@ -7,11 +7,6 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
-import com.hw.misha.chatroom.DB.FireBaseDBHandler;
-import com.hw.misha.chatroom.Entities.ChatRoom;
-import com.hw.misha.chatroom.Entities.ChatRoomUser;
-import com.hw.misha.chatroom.Interfaces.RoomStateListener;
-import com.hw.misha.chatroom.Utilities.UtilMethods;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -23,7 +18,7 @@ public class FirebaseDAL implements RoomStateListener, Serializable {
 
     FireBaseDBHandler fdbHandler;
 
-    HashMap<String,ChatRoom> roomHashMap;
+    HashMap<String,Room> roomHashMap;
 
     public FirebaseDAL() {
         this.fdbHandler = new FireBaseDBHandler();
@@ -31,7 +26,7 @@ public class FirebaseDAL implements RoomStateListener, Serializable {
         registerStateListener();
     }
 
-    public void registerRoom(Context context,ChatRoom room){
+    public void registerRoom(Context context,Room room){
         String roomID;
         try {
 
@@ -42,7 +37,7 @@ public class FirebaseDAL implements RoomStateListener, Serializable {
         }
 
     }
-    public void updateRoomStatus(Context context,ChatRoom room,String roomStatus){
+    public void updateRoomStatus(Context context, Room room, String roomStatus){
         //TODO: make the string resource
         if(roomStatus.equals("closeRoom")) {
             room.setRoom_isActive(false);
@@ -84,7 +79,7 @@ public class FirebaseDAL implements RoomStateListener, Serializable {
 
         synchronized (this){
             for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                ChatRoom room = postSnapshot.getValue(ChatRoom.class);
+                Room room = postSnapshot.getValue(Room.class);
                 roomHashMap.put(room.getRoom_ID(),room);
             }
         }

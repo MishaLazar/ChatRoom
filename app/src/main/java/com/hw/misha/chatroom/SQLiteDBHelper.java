@@ -1,4 +1,4 @@
-package com.hw.misha.chatroom.DB;
+package com.hw.misha.chatroom;
 
 import java.util.ArrayList;
 import android.content.ContentValues;

@@ -1,4 +1,4 @@
-package com.hw.misha.chatroom.Entities;
+package com.hw.misha.chatroom;
 
 /**
  * Created by Misha on 9/10/2016.
@@ -7,7 +7,7 @@ package com.hw.misha.chatroom.Entities;
 
 import java.util.ArrayList;
 
-public class ChatRoom {
+public class Room {
 
     String room_DisplayName;
     String room_Owner;
@@ -24,10 +24,10 @@ public class ChatRoom {
     String room_closeDate = "";
 
     //default constructor in firebase use
-    public ChatRoom() {
+    public Room() {
     }
 
-    public ChatRoom(String room_DisplayName, String room_Owner) {
+    public Room(String room_DisplayName, String room_Owner) {
         this.room_DisplayName = room_DisplayName;
         this.room_Owner = room_Owner;
     }

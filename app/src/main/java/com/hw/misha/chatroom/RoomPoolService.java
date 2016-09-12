@@ -1,18 +1,16 @@
-package com.hw.misha.chatroom.Services;
+package com.hw.misha.chatroom;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.os.Messenger;
-import android.os.RemoteException;
 
 import android.util.Log;
 import android.widget.Toast;
 
-import com.hw.misha.chatroom.Entities.ChatRoom;
+import com.hw.misha.chatroom.Room;
 
 import java.util.HashMap;
 import java.util.Timer;
@@ -31,7 +29,7 @@ public class RoomPoolService extends Service /*TimerTask*/ {
         public static final long ROOM_UPDATE_INTERVAL = 20 * 1000; // 30 seconds
 
         Messenger messageHandler;
-        HashMap<String, ChatRoom> roomHashMap;
+        HashMap<String, Room> roomHashMap;
         // run on another Thread to avoid crash
         Handler mHandler = new Handler();
         // timer handling
@@ -86,7 +84,7 @@ public class RoomPoolService extends Service /*TimerTask*/ {
             }
 
         }
-        public HashMap<String,ChatRoom> getRoomsHashMap(){
+        public HashMap<String,Room> getRoomsHashMap(){
             return roomHashMap;
         }
 

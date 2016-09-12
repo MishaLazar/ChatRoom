@@ -1,4 +1,4 @@
-package com.hw.misha.chatroom.Entities;
+package com.hw.misha.chatroom;
 
 /**
  * Created by Misha on 9/11/2016.

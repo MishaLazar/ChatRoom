@@ -12,24 +12,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.hw.misha.chatroom.Adapters.ChatArrayAdapter;
-import com.hw.misha.chatroom.Entities.ChatMessage;
-
 public class ChatRoom extends Activity {
 
-    private ChatArrayAdapter chatArrayAdapter;
-    private ListView listView;
-    private EditText chatText;
-    private Button btn_Send;
-    private boolean side = false;
+    ChatArrayAdapter chatArrayAdapter;
+    ListView listView;
+    EditText chatText;
+    Button btn_Send;
+    boolean side = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room);
+        /*chatArrayAdapter = new ChatArrayAdapter(getApplicationContext(), R.layout.room_message_even_layout);*/
+        initViews();
+        Log.e("ChatRoomActivity","afterinitView");
         chatArrayAdapter = new ChatArrayAdapter(getApplicationContext(), R.layout.room_message_even_layout);
         listView.setAdapter(chatArrayAdapter);
-        initViews();
+
 
 
         listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
@@ -48,8 +48,7 @@ public class ChatRoom extends Activity {
 
     public void initViews(){
         //list view for messages
-        listView = (ListView)findViewById(R.id.room_list);
-
+        listView = (ListView)findViewById(R.id.room_msg_view);
         //send message button
         btn_Send = (Button)findViewById(R.id.room_btn_send);
         try{

@@ -1,4 +1,4 @@
-package com.hw.misha.chatroom.Entities;
+package com.hw.misha.chatroom;
 
 /**
  * Created by Misha on 9/10/2016.
@@ -7,7 +7,7 @@ package com.hw.misha.chatroom.Entities;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.hw.misha.chatroom.Utilities.UtilMethods;
+
 import java.util.ArrayList;
 import java.util.Date;
 

@@ -7,10 +7,11 @@ import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
-import com.hw.misha.chatroom.Services.RoomPoolService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,7 +28,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Firebase.setAndroidContext(this);
         setContentView(R.layout.activity_main);
-        ServiceInit();
+        //ServiceInit();
+
+        Button btn = (Button)findViewById(R.id.ChatRoomTest);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,ChatRoom.class);
+                startActivity(intent);
+            }
+        });
     }
 
 public void ServiceInit(){

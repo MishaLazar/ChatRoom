@@ -1,4 +1,4 @@
-package com.hw.misha.chatroom.DB;
+package com.hw.misha.chatroom;
 /**
  * Created by Misha on 9/10/2016.
  */
@@ -7,9 +7,6 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.hw.misha.chatroom.Entities.ChatRoom;
-import com.hw.misha.chatroom.Entities.ChatRoomUser;
-import com.hw.misha.chatroom.Interfaces.RoomStateListener;
 
 import java.util.ArrayList;
 
@@ -29,7 +26,7 @@ public class FireBaseDBHandler {
 
     //Write functions
 
-    public String registerRoom(ChatRoom room) throws Exception{
+    public String registerRoom(Room room) throws Exception{
         //TODO Add Listener to notify on complete
         Firebase roomsNodeRef = fire_db.child("ChatRoomNode");
         Firebase newNodeRef = roomsNodeRef.push();
@@ -85,7 +82,7 @@ public class FireBaseDBHandler {
         room_isActiveRef.updateChildren(status);
     }*/
     //update functions
-    public void changeRoomStatus(ChatRoom room , String roomID) throws Exception{
+    public void changeRoomStatus(Room room , String roomID) throws Exception{
         //TODO Add Listener to notify on complete
         Firebase roomsNodeRef = fire_db.child("ChatRoomNode");
         Firebase roomRef = roomsNodeRef.child(roomID);
