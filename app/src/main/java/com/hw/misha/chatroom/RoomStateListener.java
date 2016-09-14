@@ -1,4 +1,4 @@
-package com.hw.misha.chatroom.Interfaces;
+package com.hw.misha.chatroom;
 
 /**
  * Created by Misha on 9/10/2016.
@@ -13,5 +13,5 @@ public interface RoomStateListener {
 
     void notifyListener(DataSnapshot snapshot);
 
-    HashMap<?, ?> getrooms();
+    HashMap<?, ?> getRooms();
 }

@@ -1,18 +1,16 @@
-package com.hw.misha.chatroom.Services;
+package com.hw.misha.chatroom;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.os.Messenger;
-import android.os.RemoteException;
 
 import android.util.Log;
 import android.widget.Toast;
 
-import com.hw.misha.chatroom.Entities.ChatRoom;
+import com.hw.misha.chatroom.Room;
 
 import java.util.HashMap;
 import java.util.Timer;
@@ -20,22 +18,18 @@ import java.util.TimerTask;
 /**
  * Created by Misha on 9/10/2016.
  */
-public class RoomPoolService {
-    /**
-     * Created by Misha on 9/7/2016.
-     */
-    public class RoomRefreshService extends Service /*TimerTask*/ {
+public class RoomPoolService extends Service /*TimerTask*/ {
         private static final String DB_REF = "db_obj";
         private static final String EXTRA_PARAM_A = "PARAM_A";
 
-        public static final String BROADCAST_ACTION_POLL = "com.example.misha.myfirebasetest.BROADCAST_ACTION_POLL";
+        public static final String BROADCAST_ACTION_POLL = "com.hw.misha.chatroom.BROADCAST_ACTION_POLL";
         public static final String EXTRA_PARAM_B = "getRoomsUpdate";
         // constant
         //TODO define the correct time interval 
         public static final long ROOM_UPDATE_INTERVAL = 20 * 1000; // 30 seconds
 
         Messenger messageHandler;
-        HashMap<String, ChatRoom> roomHashMap;
+        HashMap<String, Room> roomHashMap;
         // run on another Thread to avoid crash
         Handler mHandler = new Handler();
         // timer handling
@@ -44,7 +38,6 @@ public class RoomPoolService {
         @Override
         public int onStartCommand(Intent intent, int flags, int startId) {
             Bundle extras = intent.getExtras();
-            messageHandler = (Messenger) extras.get("MESSENGER");
             Toast.makeText(getBaseContext(),"in onStartCommand",Toast.LENGTH_SHORT).show();
             return super.onStartCommand(intent, flags, startId);
         }
@@ -91,7 +84,7 @@ public class RoomPoolService {
             }
 
         }
-        public HashMap<String,ChatRoom> getRoomsHashMap(){
+        public HashMap<String,Room> getRoomsHashMap(){
             return roomHashMap;
         }
 
@@ -103,5 +96,5 @@ public class RoomPoolService {
             sendBroadcast(intent);
 
         }
-    }
 }
+
