@@ -7,6 +7,9 @@
     android:id="@+id/room_layout"
     tools:context="com.hw.misha.chatroom.ChatRoom">
     <ListView
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp"
+        android:listSelector="@android:color/transparent"
         android:id="@+id/room_msg_view"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
@@ -20,22 +23,24 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="20dip"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="3">
 
         <EditText
             android:id="@+id/msg"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="2" />
+            android:layout_width="303dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:inputType="text"
+            android:hint="type message" />
 
         <Button
             android:id="@+id/room_btn_send"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:text="Send" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send"
+            />
 
     </LinearLayout>
 

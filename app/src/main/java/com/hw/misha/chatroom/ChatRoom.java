@@ -27,7 +27,7 @@ public class ChatRoom extends Activity {
         /*chatArrayAdapter = new ChatArrayAdapter(getApplicationContext(), R.layout.room_message_even_layout);*/
         initViews();
         Log.e("ChatRoomActivity","afterinitView");
-        chatArrayAdapter = new ChatArrayAdapter(getApplicationContext(), R.layout.room_message_even_layout);
+        chatArrayAdapter = new ChatArrayAdapter(getApplicationContext(), R.layout.list_item_chat_message);
         listView.setAdapter(chatArrayAdapter);
 
 

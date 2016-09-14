@@ -19,9 +19,15 @@ public class UtilMethods {
         return currentTimestamp;
     }
 
-    private final String getDateTime() {
+    public final static String getDateTime() {
         // get date time in custom format
         SimpleDateFormat sdf = new SimpleDateFormat("[yyyy/MM/dd - HH:mm:ss]");
+        return sdf.format(new Date());
+    }
+
+    public final static String getDateTimeSimple() {
+        // get date time in custom format
+        SimpleDateFormat sdf = new SimpleDateFormat("[yyyy/MM/dd - HH:mm]");
         return sdf.format(new Date());
     }
 }
