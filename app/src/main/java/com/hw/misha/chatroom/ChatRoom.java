@@ -1,6 +1,7 @@
 package com.hw.misha.chatroom;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 
@@ -20,11 +21,15 @@ public class ChatRoom extends Activity {
     Button btn_Send;
     boolean side = false;
 
+    FireBaseDAL fdb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room);
         /*chatArrayAdapter = new ChatArrayAdapter(getApplicationContext(), R.layout.room_message_even_layout);*/
+        Intent intent = getIntent();
+        fdb = FireBaseDAL.getFireBaseDALInstance();
         initViews();
         Log.e("ChatRoomActivity","afterinitView");
         chatArrayAdapter = new ChatArrayAdapter(getApplicationContext(), R.layout.list_item_chat_message);
@@ -76,9 +81,13 @@ public class ChatRoom extends Activity {
 
     }
     private boolean sendChatMessage() {
-        chatArrayAdapter.add(new ChatMessage(side, chatText.getText().toString()));
-        chatText.setText("");
-        side = !side;
+
+        ChatMessage message = new ChatMessage(side, chatText.getText().toString(),"-KR-jyrIWE5Aq4fF6y-5");
+        message.setUserId("idtest");
+        fdb.sendMessage(message);
+//        chatArrayAdapter.add(new ChatMessage(side, chatText.getText().toString()));
+//        chatText.setText("");
+//        side = !side;
         return true;
     }
 

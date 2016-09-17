@@ -3,6 +3,10 @@ package com.hw.misha.chatroom;
 /**
  * Created by Misha on 9/10/2016.
  */
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
+
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -30,4 +34,5 @@ public class UtilMethods {
         SimpleDateFormat sdf = new SimpleDateFormat("[yyyy/MM/dd - HH:mm]");
         return sdf.format(new Date());
     }
+
 }

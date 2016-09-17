@@ -18,18 +18,23 @@ public class MainActivity extends AppCompatActivity {
     //BroadcastReceiver
     InnerRoomsPoolReceiver receiver;
 
+    FireBaseDAL fdb;
 
     //Service
     RoomPoolService roomPoolService;
-
+    Firebase fire_db;
     //Trank
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Firebase.setAndroidContext(this);
+
+
+
         setContentView(R.layout.activity_main);
         //ServiceInit();
-
+        FireBaseDBHandler dbHandler = FireBaseDBHandler.getFireBaseDBHandlerInstance(MainActivity.this);
+        fdb = FireBaseDAL.getFireBaseDALInstance();
+        fdb.setFdbHandler(dbHandler);
         Button btn = (Button)findViewById(R.id.ChatRoomTest);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,4 +77,5 @@ public class InnerRoomsPoolReceiver extends BroadcastReceiver {
             //}
         }
     }
+
 }

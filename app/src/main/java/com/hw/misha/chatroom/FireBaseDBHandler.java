@@ -2,26 +2,38 @@ package com.hw.misha.chatroom;
 /**
  * Created by Misha on 9/10/2016.
  */
+import android.content.Context;
+import android.util.Log;
+
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
 /**
  * Created by Misha on 9/3/2016.
  */
-public class FireBaseDBHandler {
+public class FireBaseDBHandler implements Serializable{
 
+    static  FireBaseDBHandler instance = null;
     ArrayList<RoomStateListener> roomsStatelisteners;
-    Firebase fire_db = new Firebase("https://chatroomapp-6dd82.firebaseio.com/");
+    Firebase fire_db ;//= new Firebase("https://chatroomapp-6dd82.firebaseio.com/");
 
-
-    public FireBaseDBHandler() {
+    public FireBaseDBHandler(Context context) {
+        Firebase.setAndroidContext(context);
+        fire_db = new Firebase("https://chatroomapp-6dd82.firebaseio.com/");
         roomsStatelisteners  = new ArrayList<>();
+    }
+    public static FireBaseDBHandler getFireBaseDBHandlerInstance(Context context){
+        if (instance == null ){
+            instance = new FireBaseDBHandler(context);
+        }
+        return instance;
     }
 
     //Write functions
@@ -49,6 +61,34 @@ public class FireBaseDBHandler {
             }
         return  null;
     }
+
+    public void registerChatRoomMessage(String roomID,ChatMessage message) {
+        Firebase roomsNodeRef = fire_db.child("ChatRoomNode");
+        Firebase roomNodeRef = roomsNodeRef.child(roomID);
+        Firebase messageNodeRef = roomNodeRef.child("Messages");
+        Firebase newMessageNode = messageNodeRef.push();
+        if (roomID != null) {
+            //try {
+            String postId = newMessageNode.getKey();
+            message.setId(postId);
+            newMessageNode.setValue(message, new Firebase.CompletionListener() {
+                @Override
+                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                    if (firebaseError != null) {
+                        System.out.println("Data could not be saved. " + firebaseError.getMessage());
+                    } else {
+                        System.out.println("Data saved successfully.");
+                    }
+                }
+            });
+
+           /* }catch (Exception exc){
+                Log.e("registerChatRoomMessage", exc.getMessage());
+                //throw new Exception("Something failed.", new Throwable(String.valueOf(exc.getMessage())));
+            }*/
+        }
+    }
+
     public String registerUser(ChatRoomUser newUser) throws Exception{
         //TODO Add Listener to notify on complete
         Firebase roomsNodeRef = fire_db.child("Users");
@@ -72,6 +112,29 @@ public class FireBaseDBHandler {
             }
         return  null;
     }
+    /*public String push_Message(ChatMessage msg) throws Exception{
+        //TODO Add Listener to notify on complete
+        Firebase roomsNodeRef = fire_db.child("Messages");
+        Firebase newNodeRef = roomsNodeRef.push();
+        if (room != null)
+            try {
+                newNodeRef.setValue(room,new Firebase.CompletionListener() {
+                    @Override
+                    public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                        if (firebaseError != null) {
+                            System.out.println("Data could not be saved. " + firebaseError.getMessage());
+                        } else {
+                            System.out.println("Data saved successfully.");
+                        }
+                    }
+                });
+                String postId = newNodeRef.getKey();
+                return postId;
+            }catch (Exception exc){
+                throw new Exception("Something failed.", new Throwable(String.valueOf(Exception.class)));
+            }
+        return  null;
+    }*/
 
 
     ///override function

@@ -4,9 +4,11 @@ package com.hw.misha.chatroom;
  * Created by Misha on 9/10/2016.
  */
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -14,19 +16,39 @@ import java.util.HashMap;
 /**
  * Created by Misha on 9/3/2016.
  */
-public class FirebaseDAL implements RoomStateListener, Serializable {
+public class FireBaseDAL implements RoomStateListener, Serializable {
 
+    static FireBaseDAL instance = null;
     FireBaseDBHandler fdbHandler;
 
     HashMap<String,Room> roomHashMap;
 
-    public FirebaseDAL() {
-        this.fdbHandler = new FireBaseDBHandler();
+    public  FireBaseDAL(){
         this.roomHashMap = new HashMap<>();
-        registerStateListener();
+        //registerStateListener();
     }
 
-    public void registerRoom(Context context,Room room){
+    public static FireBaseDAL getFireBaseDALInstance(){
+        if(instance == null){
+            instance = new FireBaseDAL( );
+        }
+        return instance;
+    }
+  /*  public FireBaseDAL() {
+        this.fdbHandler = new FireBaseDBHandler(context);
+        this.roomHashMap = new HashMap<>();
+        registerStateListener();
+    }*/
+
+    public FireBaseDBHandler getFdbHandler() {
+        return fdbHandler;
+    }
+
+    public void setFdbHandler(FireBaseDBHandler fdbHandler) {
+        this.fdbHandler = fdbHandler;
+    }
+
+    public void registerRoom(Context context, Room room){
         String roomID;
         try {
 
@@ -65,6 +87,16 @@ public class FirebaseDAL implements RoomStateListener, Serializable {
         }
 
 
+    }
+    public void sendMessage(ChatMessage message){
+        if(message != null){
+            //try {
+                fdbHandler.registerChatRoomMessage(message.getRoomID(),message);
+            //}catch (Exception exc){
+               // Log.e("sendMessage(...)" , exc.getMessage().toString());
+           // }
+
+        }
     }
 
     @Override

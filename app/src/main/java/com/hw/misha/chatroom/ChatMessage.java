@@ -6,24 +6,36 @@ import java.util.Date;
  * Created by Misha on 9/11/2016.
  */
 public class ChatMessage {
-    private long id;
-    private boolean isMe;
-    private String message;
-    private Long userId;
-    private String dateTime;
 
+    String id;
+    boolean isMe;
+    String message;
+    String userId;
+    String dateTime;
+    String roomID;
 
-    public ChatMessage(boolean isMe, String message) {
+    public ChatMessage() {
+    }
 
+    public ChatMessage(boolean isMe, String message,String roomID) {
+        this.roomID = roomID;
         this.isMe = isMe;
         this.message = message;
         this.dateTime = UtilMethods.getDateTimeSimple();
     }
 
-    public long getId() {
+    public String getRoomID() {
+        return roomID;
+    }
+
+    public void setRoomID(String roomID) {
+        this.roomID = roomID;
+    }
+
+    public String getId() {
         return id;
     }
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
     public boolean getIsme() {
@@ -38,11 +50,11 @@ public class ChatMessage {
     public void setMessage(String message) {
         this.message = message;
     }
-    public long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
