@@ -1,14 +1,19 @@
 package com.hw.misha.chatroom;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Date;
 
 /**
  * Created by Misha on 9/11/2016.
  */
+
 public class ChatMessage {
 
     String id;
-    boolean isMe;
+
+    int isMe;
     String message;
     String userId;
     String dateTime;
@@ -17,7 +22,7 @@ public class ChatMessage {
     public ChatMessage() {
     }
 
-    public ChatMessage(boolean isMe, String message,String roomID) {
+    public ChatMessage(int isMe, String message,String roomID) {
         this.roomID = roomID;
         this.isMe = isMe;
         this.message = message;
@@ -38,10 +43,11 @@ public class ChatMessage {
     public void setId(String id) {
         this.id = id;
     }
-    public boolean getIsme() {
+
+    public int getIsme() {
         return isMe;
     }
-    public void setMe(boolean isMe) {
+    public void setMe(int isMe) {
         this.isMe = isMe;
     }
     public String getMessage() {

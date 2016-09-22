@@ -22,16 +22,38 @@ public class ChatRoom extends Activity {
     boolean side = false;
 
     FireBaseDAL fdb;
+    private boolean first = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room);
-        /*chatArrayAdapter = new ChatArrayAdapter(getApplicationContext(), R.layout.room_message_even_layout);*/
         Intent intent = getIntent();
+        //get\create singleton db reference
         fdb = FireBaseDAL.getFireBaseDALInstance();
         initViews();
-        Log.e("ChatRoomActivity","afterinitView");
+        Log.d("ChatRoomActivity","after initViews()");
+
+        intAdapter();
+        Log.d("ChatRoomActivity","after intAdapter()");
+        /*chatArrayAdapter = new ChatArrayAdapter(getApplicationContext(), R.layout.list_item_chat_message);
+        listView.setAdapter(chatArrayAdapter);
+
+
+
+        listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+        listView.setAdapter(chatArrayAdapter);
+        //auto scroll on data change
+        chatArrayAdapter.registerDataSetObserver(new DataSetObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                listView.setSelection(chatArrayAdapter.getCount() - 1);
+            }
+        });*/
+
+    }
+    public void intAdapter(){
         chatArrayAdapter = new ChatArrayAdapter(getApplicationContext(), R.layout.list_item_chat_message);
         listView.setAdapter(chatArrayAdapter);
 
@@ -80,9 +102,17 @@ public class ChatRoom extends Activity {
         });
 
     }
+    private void registerToListen(String room){
+        if (!first) {
+            fdb.registerMessageListener(room);
+            first = true;
+        }
+    }
     private boolean sendChatMessage() {
-
-        ChatMessage message = new ChatMessage(side, chatText.getText().toString(),"-KR-jyrIWE5Aq4fF6y-5");
+        //TODO  need to make it generic
+        registerToListen("-KR-jyrIWE5Aq4fF6y-5");
+        ChatMessage message = new ChatMessage(1, chatText.getText().toString(),"-KR-jyrIWE5Aq4fF6y-5");
+        //TODO need to create this properly 
         message.setUserId("idtest");
         fdb.sendMessage(message);
 //        chatArrayAdapter.add(new ChatMessage(side, chatText.getText().toString()));

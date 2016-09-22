@@ -11,20 +11,23 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
  * Created by Misha on 9/3/2016.
  */
-public class FireBaseDAL implements RoomStateListener, Serializable {
+public class FireBaseDAL implements RoomStateListener, Serializable, MessageStateListener {
 
     static FireBaseDAL instance = null;
     FireBaseDBHandler fdbHandler;
 
     HashMap<String,Room> roomHashMap;
+    ArrayList<ChatMessage> MessageArray;
 
     public  FireBaseDAL(){
         this.roomHashMap = new HashMap<>();
+        this.MessageArray = new ArrayList<>();
         //registerStateListener();
     }
 
@@ -120,6 +123,28 @@ public class FireBaseDAL implements RoomStateListener, Serializable {
     public HashMap<?, ?> getRooms() {
         synchronized (this){
             return roomHashMap;
+        }
+    }
+
+    @Override
+    public void registerMessageListener(String roomID) {
+        fdbHandler.registerMessageListener(this,roomID);
+    }
+
+    @Override
+    public void notifyMessageListener(DataSnapshot snapshot) {
+        synchronized (this){
+            for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                try {
+                    ChatMessage message = postSnapshot.getValue(ChatMessage.class);
+                    MessageArray.add(message);
+                }catch (Exception exc){
+
+                    Log.e("notifyMessage" , exc.getStackTrace().toString());
+                }
+
+
+            }
         }
     }
 }

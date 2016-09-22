@@ -22,7 +22,11 @@
             android:name=".RoomPoolService"
             android:exported="false" />
 
-        <activity android:name=".ChatRoom"></activity>
+        <activity android:name=".ChatRoom" />
+        <activity
+            android:name=".ChatRoomGridSelector"
+            android:label="@string/title_activity_chat_room_grid_selector"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
