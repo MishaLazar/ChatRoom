@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import java.util.HashMap;
+
 public class ChatRoom extends Activity {
 
     ChatArrayAdapter chatArrayAdapter;

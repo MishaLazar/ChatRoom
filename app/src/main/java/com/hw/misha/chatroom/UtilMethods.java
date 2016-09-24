@@ -9,8 +9,11 @@ import android.util.Log;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 
 public class UtilMethods {
@@ -34,5 +37,19 @@ public class UtilMethods {
         SimpleDateFormat sdf = new SimpleDateFormat("[yyyy/MM/dd - HH:mm]");
         return sdf.format(new Date());
     }
+    /*public void convertHashmapIntoArrayLit(HashMap<?,?> hashMap){
+        // Converting HashMap Values into ArrayList
+        List<?> valueList = new ArrayList<>(hashMap.values());
+        System.out.println("\n==> Size of Value list: " + valueList.size());
+        for (Objecttemp : valueList) {
+            System.out.println(temp);
+        }
+
+        List<Entry> entryList = new ArrayList<Entry>(companyDetails.entrySet());
+        System.out.println("\n==> Size of Entry list: " + entryList.size());
+        for (Entry temp : entryList) {
+            System.out.println(temp);
+        }
+    }*/
 
 }

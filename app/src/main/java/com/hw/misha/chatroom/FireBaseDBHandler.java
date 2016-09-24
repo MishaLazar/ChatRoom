@@ -25,6 +25,14 @@ public class FireBaseDBHandler implements Serializable{
     ArrayList<MessageStateListener> messageStatelisteners;
     Firebase fire_db ;//= new Firebase("https://chatroomapp-6dd82.firebaseio.com/");
 
+
+    DataSnapshot RoomsSnapshot = null;
+    //Firebase triggerRoomsOnceref;
+
+    ValueEventListener roomsvalueListener=null;
+    String acceptKey = "-KSOJKnUb6lxvcxWC0hU";
+
+
     public FireBaseDBHandler(Context context) {
         Firebase.setAndroidContext(context);
         fire_db = new Firebase("https://chatroomapp-6dd82.firebaseio.com/");
@@ -114,38 +122,7 @@ public class FireBaseDBHandler implements Serializable{
             }
         return  null;
     }
-    /*public String push_Message(ChatMessage msg) throws Exception{
-        //TODO Add Listener to notify on complete
-        Firebase roomsNodeRef = fire_db.child("Messages");
-        Firebase newNodeRef = roomsNodeRef.push();
-        if (room != null)
-            try {
-                newNodeRef.setValue(room,new Firebase.CompletionListener() {
-                    @Override
-                    public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                        if (firebaseError != null) {
-                            System.out.println("Data could not be saved. " + firebaseError.getMessage());
-                        } else {
-                            System.out.println("Data saved successfully.");
-                        }
-                    }
-                });
-                String postId = newNodeRef.getKey();
-                return postId;
-            }catch (Exception exc){
-                throw new Exception("Something failed.", new Throwable(String.valueOf(Exception.class)));
-            }
-        return  null;
-    }*/
 
-
-    ///override function
-
-    /*public void changeRoomStatus(String roomID,boolean status){
-        Firebase roomsNodeRef = fire_db.child("ChatRoomNode");
-        Firebase room_isActiveRef = roomsNodeRef.child("https://chatroomapp-6dd82.firebaseio.com/ChatRoomNode/-KQlWrP9K27jxT0exvYk/room_isActive");
-        room_isActiveRef.updateChildren(status);
-    }*/
     //update functions
     public void changeRoomStatus(Room room , String roomID) throws Exception{
         //TODO Add Listener to notify on complete
@@ -206,16 +183,26 @@ public class FireBaseDBHandler implements Serializable{
 
 
     }
+    public void removeReadChatRoomsState(RoomStateListener listener){
+        roomsStatelisteners.remove(this);
+    }
     public void readChatRoomsState(RoomStateListener listener){
         //register new room state listener
         roomsStatelisteners.add(listener);
 
-        Firebase ref = new Firebase("https://chatroomapp-6dd82.firebaseio.com/ChatRoomNode");
+        final Firebase ref = new Firebase("https://chatroomapp-6dd82.firebaseio.com/ChatRoomNode");
         // Attach an listener to read rooms state reference
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                notifyListeners(roomsStatelisteners,snapshot,"RoomStateListener");
+                if(roomsStatelisteners.size()>0){
+                    notifyListeners(roomsStatelisteners,snapshot,"RoomStateListener");
+                    RoomsSnapshot = snapshot;
+                    ref.removeEventListener(this);
+                }
+               else{
+                    RoomsSnapshot = snapshot;
+                }
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {
@@ -223,6 +210,65 @@ public class FireBaseDBHandler implements Serializable{
                 System.out.println("The read failed: " + firebaseError.getMessage());
             }
         });
+    }
+    public void readChatRoomsOnce(){
+        final Firebase ref = new Firebase("https://chatroomapp-6dd82.firebaseio.com/ChatRoomNode");
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                // do some stuff once
+                Log.d("readChatRoomsOnce" , "before onDataChange ");
+                RoomsSnapshot = snapshot;
+                Log.d("readChatRoomsOnce" , "after onDataChange ");
+                ref.removeEventListener(this);
+            }
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+            }
+        });
+    }
+    public void triggerRoomsOnce() throws Exception{
+        //TODO Add Listener to notify on complete
+        Firebase roomsNodeRef = fire_db.child("ChatRoomNode");
+        Firebase newNodeRef = null;
+        if(acceptKey == null){
+            newNodeRef = roomsNodeRef.push();
+            acceptKey = newNodeRef.getKey();
+        }else{
+            newNodeRef = roomsNodeRef.child(acceptKey);
+        }
+       // Firebase newNodeRef = roomsNodeRef.push();
+        try {
+            newNodeRef.setValue("accept",new Firebase.CompletionListener() {
+                @Override
+                public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                    if (firebaseError != null) {
+                        Log.d("triggerRoomsOnce","onComplete Data could not be saved. " + firebaseError.getMessage());
+                    } else {
+                        Log.d("triggerRoomsOnce"," onComplete Data saved successfully.");
+                    }
+                }
+            });
+
+        }catch (Exception exc){
+            throw new Exception("Something failed.", new Throwable(String.valueOf(Exception.class)));
+        }
+
+
+      /*  triggerRoomsOnceRef.setValue("accepted");*//*, new Firebase.CompletionListener() {
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                if (firebaseError != null) {
+                    triggerRoomsOnceRef.removeEventListener();
+                    System.out.println("Data could not be saved. " + firebaseError.getMessage());
+                } else {
+                    System.out.println("Data saved successfully.");
+                }
+            }
+        });*//*
+*/
+
     }
 
     public void notifyListeners(ArrayList listeners , DataSnapshot snapshot , String typeID){
@@ -281,5 +327,9 @@ public class FireBaseDBHandler implements Serializable{
                 System.out.println("The read failed: " + firebaseError.getMessage());
             }
         });
+    }
+
+    public DataSnapshot getUpdatedRooms() {
+        return RoomsSnapshot;
     }
 }

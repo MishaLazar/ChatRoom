@@ -9,9 +9,10 @@ import java.util.HashMap;
 
 public interface RoomStateListener {
 
-    void registerStateListener();
+    void registerStateListener(ActivityRoomStateListener listener);
 
     void notifyListener(DataSnapshot snapshot);
 
-    HashMap<?, ?> getRooms();
+    void getRoomsState();
+
 }

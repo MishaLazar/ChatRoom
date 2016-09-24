@@ -57,7 +57,7 @@ public class ChatArrayAdapter extends ArrayAdapter<ChatMessage> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        boolean myMsg = chatMessage.getIsme() ;//Just a dummy check
+        int myMsg = chatMessage.getIsme() ;//Just a dummy check
         //to simulate whether it me or other sender
         setAlignment(holder, myMsg);
         holder.txtMessage.setText(chatMessage.getMessage());
@@ -65,8 +65,8 @@ public class ChatArrayAdapter extends ArrayAdapter<ChatMessage> {
 
         return convertView;
     }
-    private void setAlignment(ViewHolder holder,boolean isMe) {
-        if (!isMe) {
+    private void setAlignment(ViewHolder holder,int isMe) {
+        if (isMe == 1) {
             holder.contentWithBG.setBackgroundResource(R.drawable.in_message_bg);
 
             LinearLayout.LayoutParams layoutParams =
