@@ -26,7 +26,8 @@
         <activity
             android:name=".ChatRoomGridSelector"
             android:label="@string/title_activity_chat_room_grid_selector"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".CreateChatRoomActivity"></activity>
     </application>
 
 </manifest>

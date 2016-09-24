@@ -105,14 +105,6 @@ public class FireBaseDAL implements RoomStateListener, Serializable, MessageStat
         }
     }
 
-    @Override
-    public void registerStateListener(ActivityRoomStateListener roomStateListener) {
-
-        //roomStateListeners.add(roomStateListener);
-        //register listener to be notified on rooms when updated
-        fdbHandler.readChatRoomsState(this);
-
-    }
     public void registerStateListener() {
 
         //roomStateListeners.add(roomStateListener);
@@ -136,7 +128,7 @@ public class FireBaseDAL implements RoomStateListener, Serializable, MessageStat
                     /*HashMap<?,?> obj  = (HashMap<?,?>)postSnapshot.getValue();
                     if (obj.size()>1){*/
                         Room room = postSnapshot.getValue(Room.class);
-                        roomHashMap.put(room.getRoom_ID(),room);
+                        roomHashMap.put(postSnapshot.getKey(),room);
                     /*}*/
                 }catch (Exception exc){
                     Log.e("notifyListener","Incorrect type" + exc.getMessage());
@@ -173,7 +165,7 @@ public class FireBaseDAL implements RoomStateListener, Serializable, MessageStat
         for (DataSnapshot postSnapshot : roomSnapshot.getChildren()) {
             try {
                 Room room = postSnapshot.getValue(Room.class);
-                roomHashMap.put(room.getRoom_ID(), room);
+                roomHashMap.put(postSnapshot.getKey(), room);
             } catch (Exception exc) {
 
                 Log.e("processRoomSnapshot", exc.getStackTrace().toString());
@@ -203,8 +195,8 @@ public class FireBaseDAL implements RoomStateListener, Serializable, MessageStat
     }
 
     public HashMap<String, Room> getRoomHashMap() {
-        DataSnapshot snapshot = fdbHandler.getUpdatedRooms();
-        processRoomSnapshot(snapshot);
+        /*DataSnapshot snapshot = fdbHandler.getUpdatedRooms();
+        processRoomSnapshot(snapshot);*/
         return roomHashMap;
     }
 }

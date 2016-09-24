@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public interface RoomStateListener {
 
-    void registerStateListener(ActivityRoomStateListener listener);
+    void registerStateListener();
 
     void notifyListener(DataSnapshot snapshot);
 

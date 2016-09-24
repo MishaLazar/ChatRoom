@@ -67,6 +67,14 @@ public class MainActivity extends AppCompatActivity {
                 fdb.registerRoom(MainActivity.this, new Room("Name", "me"));
             }
         });
+        Button btn3 = (Button) findViewById(R.id.create_room);
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, CreateChatRoomActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void ServiceInit() {

@@ -23,13 +23,11 @@ public class FireBaseDBHandler implements Serializable{
     static  FireBaseDBHandler instance = null;
     ArrayList<RoomStateListener> roomsStatelisteners;
     ArrayList<MessageStateListener> messageStatelisteners;
-    Firebase fire_db ;//= new Firebase("https://chatroomapp-6dd82.firebaseio.com/");
+    Firebase fire_db ;
 
 
     DataSnapshot RoomsSnapshot = null;
-    //Firebase triggerRoomsOnceref;
 
-    ValueEventListener roomsvalueListener=null;
     String acceptKey = "-KSOJKnUb6lxvcxWC0hU";
 
 
@@ -49,7 +47,6 @@ public class FireBaseDBHandler implements Serializable{
     //Write functions
 
     public String registerRoom(Room room) throws Exception{
-        //TODO Add Listener to notify on complete
         Firebase roomsNodeRef = fire_db.child("ChatRoomNode");
         Firebase newNodeRef = roomsNodeRef.push();
         if (room != null)
@@ -58,9 +55,9 @@ public class FireBaseDBHandler implements Serializable{
                     @Override
                     public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                         if (firebaseError != null) {
-                            System.out.println("Data could not be saved. " + firebaseError.getMessage());
+                            Log.d("registerRoom","onComplete: Data could not be saved. " + firebaseError.getMessage());
                         } else {
-                            System.out.println("Data saved successfully.");
+                            Log.d("registerRoom","onComplete: Data saved successfully.");
                         }
                     }
                 });
@@ -197,12 +194,9 @@ public class FireBaseDBHandler implements Serializable{
             public void onDataChange(DataSnapshot snapshot) {
                 if(roomsStatelisteners.size()>0){
                     notifyListeners(roomsStatelisteners,snapshot,"RoomStateListener");
-                    RoomsSnapshot = snapshot;
                     ref.removeEventListener(this);
                 }
-               else{
-                    RoomsSnapshot = snapshot;
-                }
+                RoomsSnapshot = snapshot;
             }
             @Override
             public void onCancelled(FirebaseError firebaseError) {
