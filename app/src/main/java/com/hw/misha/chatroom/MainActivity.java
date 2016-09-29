@@ -17,43 +17,36 @@ import com.firebase.client.Firebase;
 
 public class MainActivity extends AppCompatActivity {
 
-    //BroadcastReceiver
-    InnerRoomsPoolReceiver receiver;
-
     FireBaseDAL fdb;
+    String userID;
 
-    //Service
-    MessagePoolService roomPoolService;
-    Firebase fire_db;
-
-
-
-    //Trank
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.activity_main);
+
+        userID = "-KQqc02cWiHQWkaktOUp"; // temp user for test
         //ServiceInit();
         FireBaseDBHandler dbHandler = FireBaseDBHandler.getFireBaseDBHandlerInstance(MainActivity.this);
         fdb = FireBaseDAL.getFireBaseDALInstance();
         fdb.setFdbHandler(dbHandler);
-        fdb.registerStateListener();
-        fdb.getRoomsState();
+        /*fdb.registerStateListener();
+        fdb.getRoomsState();*/
         //delayBar();
+
 
         Button btn = (Button) findViewById(R.id.ChatRoomTest);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new Handler().postDelayed(new Runnable() {
+                /*new Handler().postDelayed(new Runnable() {
                     @Override
-                    public void run() {
+                    public void run() {*/
                         Intent intent = new Intent(MainActivity.this, ChatRoomGridSelector.class);
+                        intent.putExtra("userID",userID);
                         startActivity(intent);
-                    }
-                }, 3000);
+//                    }
+//                }, 3000);
 
             }
         });
@@ -61,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, ChatRoom  .class);
+                Intent intent = new Intent(MainActivity.this, ChatRoom.class);
+                intent.putExtra("userID",userID);
                 startActivity(intent);
             }
         });
@@ -70,40 +64,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, CreateChatRoomActivity.class);
+                intent.putExtra("userID",userID);
                 startActivity(intent);
             }
         });
     }
 
-    public void ServiceInit() {
-        receiver = new InnerRoomsPoolReceiver();
-        registerReceiver(receiver, new IntentFilter(MessagePoolService.BROADCAST_ACTION_POLL));
-        Context context = MainActivity.this;
-        Intent intentService = new Intent(context, MessagePoolService.class);
-        //intentService.putExtra("DAL_FDB",fdb);
-        startService(intentService);
-    }
-
-    public void printToasTest() {
-        Toast.makeText(MainActivity.this, "in onReceive", Toast.LENGTH_SHORT).show();
-    }
-
-    public class InnerRoomsPoolReceiver extends BroadcastReceiver {
-
-
-        public InnerRoomsPoolReceiver() {
-
-        }
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // if (intent.getAction().equals(RoomRefreshService.BROADCAST_ACTION_POLL)) {
-            //String param = intent.getStringExtra(RoomRefreshService.EXTRA_PARAM_B);
-
-
-            Log.e("innerReceiver", "MyReceiver: broadcast received");
-            printToasTest();
-            //}
-        }
-    }
     }

@@ -22,16 +22,20 @@ public class ChatMessage implements Comparable <ChatMessage>{
     String dateOnly;
     @JsonIgnore
     String timeOnly;
+
+
     public ChatMessage() {
     }
 
-    public ChatMessage(int isMe, String message,String roomID) {
+    public ChatMessage(int isMe, String message,String roomID,String userId) {
         this.roomID = roomID;
         this.isMe = isMe;
         this.message = message;
+        this.userId = userId;
         this.dateTime = UtilMethods.getDateTimeSimple();
         this.dateOnly = UtilMethods.getDateSimple();
         this.timeOnly = UtilMethods.getTimeSimple();
+
     }
 
     public String getRoomID() {
