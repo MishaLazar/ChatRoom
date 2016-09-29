@@ -9,7 +9,7 @@ import java.util.Date;
  * Created by Misha on 9/11/2016.
  */
 
-public class ChatMessage {
+public class ChatMessage implements Comparable <ChatMessage>{
 
     String id;
 
@@ -18,7 +18,10 @@ public class ChatMessage {
     String userId;
     String dateTime;
     String roomID;
-
+    @JsonIgnore
+    String dateOnly;
+    @JsonIgnore
+    String timeOnly;
     public ChatMessage() {
     }
 
@@ -27,6 +30,8 @@ public class ChatMessage {
         this.isMe = isMe;
         this.message = message;
         this.dateTime = UtilMethods.getDateTimeSimple();
+        this.dateOnly = UtilMethods.getDateSimple();
+        this.timeOnly = UtilMethods.getTimeSimple();
     }
 
     public String getRoomID() {
@@ -40,36 +45,54 @@ public class ChatMessage {
     public String getId() {
         return id;
     }
+
     public void setId(String id) {
         this.id = id;
     }
 
-    public int getIsme() {
-        return isMe;
-    }
-    public void setMe(int isMe) {
-        this.isMe = isMe;
-    }
+
     public String getMessage() {
         return message;
     }
     public void setMessage(String message) {
         this.message = message;
     }
+
     public String getUserId() {
         return userId;
+    }
+
+    public void setIsMe(int isMe) {
+        this.isMe = isMe;
+    }
+
+    public int getIsMe() {
+        return isMe;
     }
 
     public void setUserId(String userId) {
         this.userId = userId;
     }
-
+    @JsonIgnore
     public String getDate() {
         return dateTime;
+    }
+    @JsonIgnore
+    public String getTimeOnly() {
+        return timeOnly;
+    }
+    @JsonIgnore
+    public String getDateOnly() {
+        return dateOnly;
     }
 
     public void setDate(String dateTime) {
         this.dateTime = dateTime;
     }
 
+
+    @Override
+    public int compareTo(ChatMessage message) {
+        return Comparators.MessageOrder.compare(this, message);
+    }
 }

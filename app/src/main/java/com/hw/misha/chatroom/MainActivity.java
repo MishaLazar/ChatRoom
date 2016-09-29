@@ -1,18 +1,15 @@
 package com.hw.misha.chatroom;
 
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
@@ -26,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     FireBaseDAL fdb;
 
     //Service
-    RoomPoolService roomPoolService;
+    MessagePoolService roomPoolService;
     Firebase fire_db;
 
 
@@ -64,7 +61,8 @@ public class MainActivity extends AppCompatActivity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fdb.registerRoom(MainActivity.this, new Room("Name", "me"));
+                Intent intent = new Intent(MainActivity.this, ChatRoom  .class);
+                startActivity(intent);
             }
         });
         Button btn3 = (Button) findViewById(R.id.create_room);
@@ -79,9 +77,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void ServiceInit() {
         receiver = new InnerRoomsPoolReceiver();
-        registerReceiver(receiver, new IntentFilter(RoomPoolService.BROADCAST_ACTION_POLL));
+        registerReceiver(receiver, new IntentFilter(MessagePoolService.BROADCAST_ACTION_POLL));
         Context context = MainActivity.this;
-        Intent intentService = new Intent(context, RoomPoolService.class);
+        Intent intentService = new Intent(context, MessagePoolService.class);
         //intentService.putExtra("DAL_FDB",fdb);
         startService(intentService);
     }

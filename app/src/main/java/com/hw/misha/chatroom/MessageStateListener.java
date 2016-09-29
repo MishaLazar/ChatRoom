@@ -10,4 +10,8 @@ public interface MessageStateListener {
     void registerMessageListener(String roomID);
 
     void notifyMessageListener(DataSnapshot snapshot);
+
+    void notifyQueryMessageListener(DataSnapshot snapshot);
+
+
 }

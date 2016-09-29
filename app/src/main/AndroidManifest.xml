@@ -19,7 +19,7 @@
         </activity>
 
         <service
-            android:name=".RoomPoolService"
+            android:name=".MessagePoolService"
             android:exported="false" />
 
         <activity android:name=".ChatRoom" />

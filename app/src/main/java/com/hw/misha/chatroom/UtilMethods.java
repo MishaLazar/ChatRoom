@@ -34,7 +34,17 @@ public class UtilMethods {
 
     public final static String getDateTimeSimple() {
         // get date time in custom format
-        SimpleDateFormat sdf = new SimpleDateFormat("[yyyy/MM/dd - HH:mm]");
+        SimpleDateFormat sdf = new SimpleDateFormat("[yyyy/MM/dd - HH:mm:ss]");
+        return sdf.format(new Date());
+    }
+    public final static String getDateSimple() {
+        // get date time in custom format
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        return sdf.format(new Date());
+    }
+    public final static String getTimeSimple() {
+        // get date time in custom format
+        SimpleDateFormat sdf = new SimpleDateFormat("HH");
         return sdf.format(new Date());
     }
     /*public void convertHashmapIntoArrayLit(HashMap<?,?> hashMap){

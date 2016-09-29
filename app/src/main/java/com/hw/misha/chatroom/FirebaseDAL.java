@@ -8,9 +8,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,11 +24,14 @@ public class FireBaseDAL implements RoomStateListener, Serializable, MessageStat
 
     ArrayList<ActivityRoomStateListener> roomStateListeners;
     HashMap<String,Room> roomHashMap;
-    ArrayList<ChatMessage> MessageArray;
+    HashMap<String,ChatMessage> messageMap;
+    ArrayList<MessageStateServiceListener> messageStateListeners;
+
+    Context context;
 
     public  FireBaseDAL(){
         this.roomHashMap = new HashMap<>();
-        this.MessageArray = new ArrayList<>();
+        this.messageMap = new HashMap<>();
         //registerStateListener();
     }
 
@@ -65,6 +66,11 @@ public class FireBaseDAL implements RoomStateListener, Serializable, MessageStat
         }
 
     }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
     public void updateRoomStatus(Context context, Room room, String roomStatus){
         //TODO: make the string resource
         if(roomStatus.equals("closeRoom")) {
@@ -95,6 +101,7 @@ public class FireBaseDAL implements RoomStateListener, Serializable, MessageStat
 
     }
     public void sendMessage(ChatMessage message){
+
         if(message != null){
             //try {
                 fdbHandler.registerChatRoomMessage(message.getRoomID(),message);
@@ -116,6 +123,12 @@ public class FireBaseDAL implements RoomStateListener, Serializable, MessageStat
 
         //roomStateListeners.remove(roomStateListener);
         fdbHandler.removeReadChatRoomsState(this);
+
+    }
+    public void unregisterMessageListener(String roomID) {
+
+        //roomStateListeners.remove(roomStateListener);
+        fdbHandler.unregisterMessageListener(this,roomID);
 
     }
 
@@ -177,13 +190,24 @@ public class FireBaseDAL implements RoomStateListener, Serializable, MessageStat
         fdbHandler.registerMessageListener(this,roomID);
     }
 
+    public void registerMessageListener(MessageStateServiceListener listener,String roomID) {
+        //messageStateListeners.add(listener);
+        fdbHandler.registerMessageListener(this,roomID);
+    }
+
     @Override
     public void notifyMessageListener(DataSnapshot snapshot) {
         synchronized (this){
             for (DataSnapshot postSnapshot: snapshot.getChildren()) {
                 try {
                     ChatMessage message = postSnapshot.getValue(ChatMessage.class);
-                    MessageArray.add(message);
+                    messageMap.put(postSnapshot.getKey(),message);
+                    /*Intent intent = new Intent("com.hw.misha.chatroom.BROADCAST_ACTION_POLL");
+                    context.sendBroadcast(intent);*/
+                    /*for (Object listener : messageStateListeners) {
+                        MessageStateServiceListener castListener = (MessageStateServiceListener)listener;
+                        castListener.notifyMessageStateServiceListener();
+                    }*/
                 }catch (Exception exc){
 
                     Log.e("notifyMessage" , exc.getStackTrace().toString());
@@ -191,12 +215,43 @@ public class FireBaseDAL implements RoomStateListener, Serializable, MessageStat
 
 
             }
+            Intent intent = new Intent("com.hw.misha.chatroom.BROADCAST_ACTION_POLL");
+            context.sendBroadcast(intent);
         }
     }
+    @Override
+    public void notifyQueryMessageListener(DataSnapshot snapshot) {
+        synchronized (this){
+                try {
+                    ChatMessage message = snapshot.getValue(ChatMessage.class);
+                    messageMap.put(snapshot.getKey(),message);
+                    /*Intent intent = new Intent("com.hw.misha.chatroom.BROADCAST_ACTION_POLL");
+                    context.sendBroadcast(intent);*/
+                    /*for (Object listener : messageStateListeners) {
+                        MessageStateServiceListener castListener = (MessageStateServiceListener)listener;
+                        castListener.notifyMessageStateServiceListener();
+                    }*/
+                }catch (Exception exc){
 
+                    Log.e("notifyMessage" , exc.getStackTrace().toString());
+                }
+            Intent intent = new Intent("com.hw.misha.chatroom.BROADCAST_ACTION_POLL");
+            context.sendBroadcast(intent);
+        }
+    }
     public HashMap<String, Room> getRoomHashMap() {
         /*DataSnapshot snapshot = fdbHandler.getUpdatedRooms();
         processRoomSnapshot(snapshot);*/
         return roomHashMap;
+    }
+    public HashMap<String, ChatMessage> getMessagesHashMap() {
+        /*DataSnapshot snapshot = fdbHandler.getUpdatedRooms();
+        processRoomSnapshot(snapshot);*/
+        HashMap<String, ChatMessage> tempToRerutn = messageMap;
+
+        return tempToRerutn;
+    }
+    public void clearMessageMap(){
+        messageMap.clear();
     }
 }
