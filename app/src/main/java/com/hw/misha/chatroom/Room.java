@@ -16,10 +16,10 @@ public class Room {
     String room_ID = "";
 
     //tags for filter
-    ArrayList<String> room_Tags = new ArrayList<String>(){{add("DefaultValue");}};
+    ArrayList<String> room_Tags ;
 
     //status failed's
-    boolean room_isActive = true;
+    boolean room_isActive ;
     String room_createDate = "" ;
     String room_closeDate = "";
 
@@ -27,9 +27,19 @@ public class Room {
     public Room() {
     }
 
-    public Room(String room_DisplayName, String room_Owner) {
+    public Room(String room_DisplayName,String Tag) {
         this.room_DisplayName = room_DisplayName;
-        this.room_Owner = room_Owner;
+        room_Tags = new ArrayList<String>();
+        room_Tags.add(Tag);
+
+    }
+
+    public boolean isRoom_isActive() {
+        return room_isActive;
+    }
+
+    public void setRoom_isActive(boolean room_isActive) {
+        this.room_isActive = room_isActive;
     }
 
     public void setRoom_ID(String room_ID) {
@@ -40,9 +50,6 @@ public class Room {
         this.room_Tags = room_Tags;
     }
 
-    public void setRoom_isActive(Boolean room_isActive) {
-        this.room_isActive = room_isActive;
-    }
 
     public void setRoom_createDate(String room_createDate) {
         this.room_createDate = room_createDate;
@@ -68,11 +75,20 @@ public class Room {
         return room_Tags;
     }
 
-    public Boolean getRoom_isActive() {
-        return room_isActive;
-    }
 
     public String getRoom_createDate() {
         return room_createDate;
+    }
+
+    public void setRoom_DisplayName(String room_DisplayName) {
+        this.room_DisplayName = room_DisplayName;
+    }
+
+    public void setRoom_Owner(String room_Owner) {
+        this.room_Owner = room_Owner;
+    }
+
+    public String getRoom_closeDate() {
+        return room_closeDate;
     }
 }

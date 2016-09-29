@@ -1,6 +1,7 @@
 package com.hw.misha.chatroom;
 import android.content.Context;
 
+import android.util.ArraySet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Misha on 9/11/2016.
@@ -27,12 +30,14 @@ public class ChatArrayAdapter extends ArrayAdapter<ChatMessage> {
     public void add(ChatMessage object) {
         this.currentMSG = object;
         chatMessageList.add(currentMSG);
+        Collections.sort(chatMessageList,Comparators.MessageOrder);
         super.add(currentMSG);
     }
 
     public ChatArrayAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
         this.context = context;
+
     }
 
     public int getCount() {
@@ -57,16 +62,16 @@ public class ChatArrayAdapter extends ArrayAdapter<ChatMessage> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        boolean myMsg = chatMessage.getIsme() ;//Just a dummy check
+        int myMsg = chatMessage.getIsMe() ;//Just a dummy check
         //to simulate whether it me or other sender
         setAlignment(holder, myMsg);
         holder.txtMessage.setText(chatMessage.getMessage());
-        holder.txtInfo.setText(chatMessage.getDate());
+        //holder.txtInfo.setText(chatMessage.getDate());
 
         return convertView;
     }
-    private void setAlignment(ViewHolder holder,boolean isMe) {
-        if (!isMe) {
+    private void setAlignment(ViewHolder holder,int isMe) {
+        if (isMe == 1) {
             holder.contentWithBG.setBackgroundResource(R.drawable.in_message_bg);
 
             LinearLayout.LayoutParams layoutParams =

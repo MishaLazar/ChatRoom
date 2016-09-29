@@ -1,57 +1,98 @@
 package com.hw.misha.chatroom;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Date;
 
 /**
  * Created by Misha on 9/11/2016.
  */
-public class ChatMessage {
-    private long id;
-    private boolean isMe;
-    private String message;
-    private Long userId;
-    private String dateTime;
 
+public class ChatMessage implements Comparable <ChatMessage>{
 
-    public ChatMessage(boolean isMe, String message) {
+    String id;
 
+    int isMe;
+    String message;
+    String userId;
+    String dateTime;
+    String roomID;
+    @JsonIgnore
+    String dateOnly;
+    @JsonIgnore
+    String timeOnly;
+    public ChatMessage() {
+    }
+
+    public ChatMessage(int isMe, String message,String roomID) {
+        this.roomID = roomID;
         this.isMe = isMe;
         this.message = message;
         this.dateTime = UtilMethods.getDateTimeSimple();
+        this.dateOnly = UtilMethods.getDateSimple();
+        this.timeOnly = UtilMethods.getTimeSimple();
     }
 
-    public long getId() {
+    public String getRoomID() {
+        return roomID;
+    }
+
+    public void setRoomID(String roomID) {
+        this.roomID = roomID;
+    }
+
+    public String getId() {
         return id;
     }
-    public void setId(long id) {
+
+    public void setId(String id) {
         this.id = id;
     }
-    public boolean getIsme() {
-        return isMe;
-    }
-    public void setMe(boolean isMe) {
-        this.isMe = isMe;
-    }
+
+
     public String getMessage() {
         return message;
     }
     public void setMessage(String message) {
         this.message = message;
     }
-    public long getUserId() {
+
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setIsMe(int isMe) {
+        this.isMe = isMe;
     }
 
+    public int getIsMe() {
+        return isMe;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+    @JsonIgnore
     public String getDate() {
         return dateTime;
+    }
+    @JsonIgnore
+    public String getTimeOnly() {
+        return timeOnly;
+    }
+    @JsonIgnore
+    public String getDateOnly() {
+        return dateOnly;
     }
 
     public void setDate(String dateTime) {
         this.dateTime = dateTime;
     }
 
+
+    @Override
+    public int compareTo(ChatMessage message) {
+        return Comparators.MessageOrder.compare(this, message);
+    }
 }
