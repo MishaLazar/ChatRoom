@@ -56,17 +56,18 @@ public class FireBaseDAL implements RoomStateListener, Serializable, MessageStat
     }
 
     public void registerRoom(Context context, Room room){
-        String roomID;
+       /* String roomID;*/
         try {
 
-            roomID = fdbHandler.registerRoom(room);
-            room.setRoom_ID(roomID);
+            /*roomID =*/ fdbHandler.registerRoom(room);
+            /*room.setRoom_ID(roomID);*/
         }catch (Exception exc){
-            Toast.makeText(context,exc.getMessage(),Toast.LENGTH_SHORT).show();
+            Log.e("registerRoom",exc.getMessage());
         }
 
     }
 
+    //TODO need to ne handled in all activities onpause/onresume/ondestroy
     public void setContext(Context context) {
         this.context = context;
     }
@@ -133,7 +134,7 @@ public class FireBaseDAL implements RoomStateListener, Serializable, MessageStat
     }
 
     @Override
-    public void notifyListener(DataSnapshot snapshot) {
+    public void roomNotifyListener(DataSnapshot snapshot) {
         //TODO need to be processed at the activity
         synchronized (this){
             for (DataSnapshot postSnapshot: snapshot.getChildren()) {
@@ -144,15 +145,16 @@ public class FireBaseDAL implements RoomStateListener, Serializable, MessageStat
                         roomHashMap.put(postSnapshot.getKey(),room);
                     /*}*/
                 }catch (Exception exc){
-                    Log.e("notifyListener","Incorrect type" + exc.getMessage());
+                    Log.e("roomNotifyListener","Incorrect type" + exc.getMessage());
                 }
 
             }
-
         }
+        Intent intent = new Intent("com.hw.misha.chatroom.BROADCAST_ACTION_POLL_ROOMS");
+        context.sendBroadcast(intent);
        /* for (Object listener : roomStateListeners) {
             ActivityRoomStateListener castListener = (ActivityRoomStateListener)listener;
-            castListener.notifyListener();
+            castListener.roomNotifyListener();
         }*/
 
     }
@@ -162,7 +164,8 @@ public class FireBaseDAL implements RoomStateListener, Serializable, MessageStat
             //fdbHandler.readChatRoomsOnce();
             //fdbHandler.readChatRoomsState(this);
             try {
-                fdbHandler.triggerRoomsOnce();
+                fdbHandler.queryChatRoomsState(this);
+                //fdbHandler.triggerRoomsOnce();
             }catch (Exception exc){
                 Log.e("triggerRoomsOnce()", "getRooms: "+exc.getStackTrace().toString());
             }

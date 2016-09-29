@@ -9,13 +9,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ChatRoomGridSelector extends AppCompatActivity implements ActivityRoomStateListener {
 
@@ -28,17 +27,25 @@ public class ChatRoomGridSelector extends AppCompatActivity implements ActivityR
 
     BroadcastReceiver receiver;
 
+    String userID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room_grid_selector);
 
+        receiver = new InnerReceiver(ChatRoomGridSelector.this);
+        registerReceiver(receiver, new IntentFilter(MessagePoolService.BROADCAST_ACTION_POLL_ROOMS));
+        Intent intent = getIntent();
+        userID = intent.getStringExtra("userID");
         //init data dal object
         initDalObject();
         //get grid data
-        //fill_Grid();
+        //getGridData();
 
-        initGrid();
+        getGridData();
+       // initGrid();
+
         /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -63,7 +70,7 @@ public class ChatRoomGridSelector extends AppCompatActivity implements ActivityR
         });*/
     }
 
-    private void fill_Grid(){
+    private void getGridData(){
     //fill the gridArray
 
         //registerRoomStateListener();
@@ -82,7 +89,7 @@ public class ChatRoomGridSelector extends AppCompatActivity implements ActivityR
         //for data
 
         fdb = FireBaseDAL.getFireBaseDALInstance();
-
+        fdb.setContext(ChatRoomGridSelector.this);
 
     }
 
@@ -104,8 +111,35 @@ public class ChatRoomGridSelector extends AppCompatActivity implements ActivityR
     public void notifyListener() {
         getRooms();
     }
+
+    class InnerReceiver extends BroadcastReceiver {
+
+        Context context;
+
+        public InnerReceiver() {
+
+        }
+
+        public InnerReceiver(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // if (intent.getAction().equals(RoomRefreshService.BROADCAST_ACTION_POLL)) {
+            //String param = intent.getStringExtra(RoomRefreshService.EXTRA_PARAM_B);
+            getRooms();
+            //Toast.makeText(context,"in onReceive",Toast.LENGTH_SHORT).show();
+            Log.e("innerReceiver", "MyReceiver: broadcast received , rooms");
+            //}
+            initGrid();
+        }
+    }
+
+
+
     public void initGrid(){
-        getRooms();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -113,6 +147,7 @@ public class ChatRoomGridSelector extends AppCompatActivity implements ActivityR
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // here we may create new room/event
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
@@ -125,7 +160,11 @@ public class ChatRoomGridSelector extends AppCompatActivity implements ActivityR
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
-                Toast.makeText(getApplicationContext(),gridArray.get(position).getRoom_ID(), Toast.LENGTH_SHORT).show();
+                /*Toast.makeText(getApplicationContext(),gridArray.get(position).getRoom_ID(), Toast.LENGTH_SHORT).show();*/
+                Intent intent = new Intent(ChatRoomGridSelector.this, ChatRoom.class);
+                intent.putExtra("roomID",gridArray.get(position).getRoom_ID());
+                intent.putExtra("userID",userID);
+                startActivity(intent);
             }
         });
     }

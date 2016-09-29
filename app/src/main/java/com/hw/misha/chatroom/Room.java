@@ -5,6 +5,9 @@ package com.hw.misha.chatroom;
  */
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.firebase.client.collection.ArraySortedMap;
+
 import java.util.ArrayList;
 
 public class Room {
@@ -13,15 +16,18 @@ public class Room {
     String room_Owner;
 
     //unique  id
-    String room_ID = "";
+    String room_ID ;
 
     //tags for filter
     ArrayList<String> room_Tags ;
 
+    //dummy
+    @JsonIgnore
+    ArraySortedMap<String,String> ChatMessages;
     //status failed's
     boolean room_isActive ;
-    String room_createDate = "" ;
-    String room_closeDate = "";
+    String room_createDate ;
+    String room_closeDate ;
 
     //default constructor in firebase use
     public Room() {
@@ -90,5 +96,13 @@ public class Room {
 
     public String getRoom_closeDate() {
         return room_closeDate;
+    }
+    @JsonIgnore
+    public ArraySortedMap<String, String> getChatMessages() {
+        return ChatMessages;
+    }
+    @JsonIgnore
+    public void setChatMessages(ArraySortedMap<String, String> chatMessages) {
+        ChatMessages = chatMessages;
     }
 }

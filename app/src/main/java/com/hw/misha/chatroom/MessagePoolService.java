@@ -22,6 +22,7 @@ import java.util.TimerTask;
  */
 public class MessagePoolService extends Service implements Runnable , MessageStateServiceListener/*TimerTask*/ {
     public static final String BROADCAST_ACTION_POLL = "com.hw.misha.chatroom.BROADCAST_ACTION_POLL";
+    public static final String BROADCAST_ACTION_POLL_ROOMS = "com.hw.misha.chatroom.BROADCAST_ACTION_POLL_ROOMS";
     // constant
     //TODO define the correct time interval
     public static final long ROOM_UPDATE_INTERVAL = 20 * 1000; // 30 seconds

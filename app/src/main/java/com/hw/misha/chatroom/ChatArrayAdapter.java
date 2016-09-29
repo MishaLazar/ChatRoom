@@ -1,7 +1,6 @@
 package com.hw.misha.chatroom;
 import android.content.Context;
 
-import android.util.ArraySet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +13,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Misha on 9/11/2016.
  */
 public class ChatArrayAdapter extends ArrayAdapter<ChatMessage> {
 
+    String userID;
     TextView chatText;
     List<ChatMessage> chatMessageList = new ArrayList<>();
     Context context;
@@ -34,11 +33,13 @@ public class ChatArrayAdapter extends ArrayAdapter<ChatMessage> {
         super.add(currentMSG);
     }
 
-    public ChatArrayAdapter(Context context, int textViewResourceId) {
+    public ChatArrayAdapter(Context context, int textViewResourceId ,String userID) {
         super(context, textViewResourceId);
         this.context = context;
+        this.userID = userID;
 
     }
+
 
     public int getCount() {
         return this.chatMessageList.size();
@@ -62,14 +63,23 @@ public class ChatArrayAdapter extends ArrayAdapter<ChatMessage> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        int myMsg = chatMessage.getIsMe() ;//Just a dummy check
-        //to simulate whether it me or other sender
+        //for side selections
+        int myMsg = checkIsMe(chatMessage.getUserId());
+
         setAlignment(holder, myMsg);
         holder.txtMessage.setText(chatMessage.getMessage());
         //holder.txtInfo.setText(chatMessage.getDate());
 
         return convertView;
     }
+
+    private int checkIsMe(String userId) {
+        if(userId.equals(this.userID))
+            return -1;
+        else
+            return 1;
+    }
+
     private void setAlignment(ViewHolder holder,int isMe) {
         if (isMe == 1) {
             holder.contentWithBG.setBackgroundResource(R.drawable.in_message_bg);

@@ -1,5 +1,6 @@
 package com.hw.misha.chatroom;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,12 +19,17 @@ public class CreateChatRoomActivity extends AppCompatActivity {
 
     //DB
     FireBaseDAL fdb;
+    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_chat_room);
         fdb = FireBaseDAL.getFireBaseDALInstance();
+
+       /* Intent intent = getIntent();
+        userID = intent.getStringExtra("userID");*/
+        userID="-KQqc02cWiHQWkaktOUp";
         initViews();
     }
 
@@ -41,7 +47,7 @@ public class CreateChatRoomActivity extends AppCompatActivity {
                         Room room = new Room(displayName,Tag1);
                         room.setRoom_isActive(isActivated);
                         //TODO need to make its general and not hard coded
-                        room.setRoom_Owner("-KQqc02cWiHQWkaktOUp");
+                        room.setRoom_Owner(userID);
                         fdb.registerRoom(CreateChatRoomActivity.this,room);
 
                     }

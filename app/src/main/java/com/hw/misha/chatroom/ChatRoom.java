@@ -32,6 +32,7 @@ public class ChatRoom extends Activity {
     boolean first = false;
     String roomID;
     InnerReceiver receiver;
+    String myUserID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,8 @@ public class ChatRoom extends Activity {
         receiver = new InnerReceiver(ChatRoom.this);
         registerReceiver(receiver, new IntentFilter(MessagePoolService.BROADCAST_ACTION_POLL));
         Intent intent = getIntent();
+        roomID = intent.getStringExtra("roomID");
+        myUserID = intent.getStringExtra("userID");
         //get\create singleton db reference
         fdb = FireBaseDAL.getFireBaseDALInstance();
         fdb.setContext(ChatRoom.this);
@@ -51,7 +54,7 @@ public class ChatRoom extends Activity {
 
         intAdapter();
         Log.d("ChatRoomActivity","after intAdapter()");
-        roomID = "-KSQlA6SdGfaLTFDLfFs";
+        //roomID = "-KSQlA6SdGfaLTFDLfFs";
 
         //TODO make it general
         registerForMessage(roomID);
@@ -100,7 +103,7 @@ public class ChatRoom extends Activity {
         startService(intentService);
     }
     public void intAdapter(){
-        chatArrayAdapter = new ChatArrayAdapter(getApplicationContext(), R.layout.list_item_chat_message);
+        chatArrayAdapter = new ChatArrayAdapter(getApplicationContext(), R.layout.list_item_chat_message,myUserID);
         listView.setAdapter(chatArrayAdapter);
 
 
@@ -157,9 +160,8 @@ public class ChatRoom extends Activity {
     }
     private boolean sendChatMessage() {
 
-        ChatMessage message = new ChatMessage(1, chatText.getText().toString(),"-KSQlA6SdGfaLTFDLfFs");
-        //TODO need to create this properly 
-        message.setUserId("idtest");
+        ChatMessage message = new ChatMessage(1, chatText.getText().toString(),roomID,myUserID);
+        //TODO need to create this properly
         fdb.sendMessage(message);
 //        chatArrayAdapter.add(new ChatMessage(side, chatText.getText().toString()));
 //        chatText.setText("");

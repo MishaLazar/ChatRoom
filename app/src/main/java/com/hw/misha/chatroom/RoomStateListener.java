@@ -11,7 +11,7 @@ public interface RoomStateListener {
 
     void registerStateListener();
 
-    void notifyListener(DataSnapshot snapshot);
+    void roomNotifyListener(DataSnapshot snapshot);
 
     void getRoomsState();
 
